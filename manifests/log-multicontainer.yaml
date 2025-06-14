@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: log-multicontainer
+spec:
+  volumes:
+    - name: shared-logs
+      emptyDir: {}
+
+  containers:
+    - name: logger
+      image: your-dockerhub-username/logger:1.0
+      volumeMounts:
+        - name: shared-logs
+          mountPath: /usr/logs
+
+    - name: reader
+      image: your-dockerhub-username/reader:1.0
+      ports:
+        - containerPort: 3000
+      volumeMounts:
+        - name: shared-logs
+          mountPath: /usr/logs
